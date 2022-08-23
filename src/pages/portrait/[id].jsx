@@ -63,6 +63,10 @@ function Portrait({
       current: 0,
       max: 0
     });
+    const [sanPoints, setSanPoints] = useState({
+      current: 0,
+      max: 0
+    });
 
     const updateHitPoints = data => {
       if(data.current === 0) {
@@ -72,6 +76,18 @@ function Portrait({
       }
 
       setHitPoints({
+        current: data.current,
+        max: data.max
+      });
+    }
+    const updateSanPoints = data => {
+      if(data.current === 0) {
+        setIsDead(true);
+      } else {
+        setIsDead(false);
+      }
+
+      setSanPoints({
         current: data.current,
         max: data.max
       });
@@ -106,6 +122,10 @@ function Portrait({
         current: character.current_hit_points,
         max: character.max_hit_points
       });
+      updateSanPoints({
+        current: character.current_san_points,
+        max: character.max_san_points
+      });
     }, [character, showOptions]);
 
     useEffect(() => {
@@ -113,6 +133,9 @@ function Portrait({
 
       socket.on('update_hit_points', data => {
         updateHitPoints(data);
+      });
+      socket.on('update_san_points', data => {
+        updateSanPoints(data);
       });
     }, [character]);
 
@@ -147,6 +170,11 @@ function Portrait({
                   {hitPoints.current}/{hitPoints.max}
                 </span>
               </div>
+              <div style={{ display: showOnly.stats ? 'block' : 'none' }}>
+                <span className={classes.sanPoints}>
+                  {sanPoints.current}/{sanPoints.max}
+                </span>
+              </div>
           </div>
         </div>
       </React.Fragment>
@@ -173,6 +201,13 @@ const styles = (theme) => ({
     fontSize: '62px',
     color: '#ffe2e2',
     textShadow: '0 0 10px #ff0000'
+  },
+
+  sanPoints: {
+    textTransform: 'uppercase',
+    fontSize: '62px',
+    color: '#e2f0ff',
+    textShadow: '0 0 10px #0077ff'
   },
 
   deadPicture: {
