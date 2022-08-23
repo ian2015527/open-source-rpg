@@ -133,6 +133,8 @@ function Portrait({
 
       socket.on('update_hit_points', data => {
         updateHitPoints(data);
+      });
+      socket.on('update_san_points', data => {
         updateSanPoints(data);
       });
     }, [character]);
@@ -204,8 +206,8 @@ const styles = (theme) => ({
   sanPoints: {
     textTransform: 'uppercase',
     fontSize: '62px',
-    color: '#0070ff',
-    textShadow: '0 0 10px #ff0000'
+    color: '#e2f0ff',
+    textShadow: '0 0 10px #0077ff'
   },
 
   deadPicture: {
